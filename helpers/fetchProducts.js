@@ -1,5 +1,6 @@
 const fetchProducts = async (productName) => {
   const url = `https://api.mercadolibre.com/sites/MLB/search?q=${productName}`;
+  
   if (!productName) return ('You must provide an url');
 
   try {
@@ -9,7 +10,7 @@ const fetchProducts = async (productName) => {
     
     return products;
   } catch (error) {
-    throw new Error('You must provide an url');
+    // throw new Error('You must provide an url');
   }
 };
 
