@@ -43,7 +43,6 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 const createItemsOnPage = async () => {
   const section = document.querySelector('.items');
   const { results } = await fetchProducts('computador');
-  console.log(results);
   results.map((element) => section.appendChild(createProductItemElement(element)));
 };
 
