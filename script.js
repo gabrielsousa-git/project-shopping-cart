@@ -1,5 +1,9 @@
 // const { fetchProducts } = require("./helpers/fetchProducts");
 
+// const getSavedCartItems = require("./helpers/getSavedCartItems");
+
+// const saveCartItems = require("./helpers/saveCartItems");
+
 // const { fetchItem } = require("./helpers/fetchItem");
 
 const createProductImageElement = (imageSource) => {
@@ -30,9 +34,13 @@ const createProductItemElement = ({ id: sku, title: name, thumbnail: image }) =>
 
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
+const ol = document.querySelector('.cart__items');
+
 const cartItemClickListener = (event) => {
-  const itemInCart = event.target;
-  itemInCart.remove();
+  if (event.target.tagName === 'LI') {
+    event.target.remove();
+    saveCartItems(ol.innerHTML);
+  }
 };
 
 const createCartItemElement = ({ id: sku, title: name, price: salePrice }) => {
@@ -52,8 +60,8 @@ const createItemsOnPage = async () => {
 const addItemsInCart = async (event) => {
   const idItem = getSkuFromProductItem(event.target.parentElement);
   const objectItem = await fetchItem(idItem);
-  const ol = document.querySelector('.cart__items');
   ol.appendChild(createCartItemElement(objectItem));
+  saveCartItems(ol.innerHTML);
 };
 
 const puttingItemsInCart = () => {
@@ -64,7 +72,44 @@ const puttingItemsInCart = () => {
   });
 };
 
+const recoverItems = () => {
+  const shoppingCart = document.querySelector('ol.cart__items');
+  const conteudoRecuperado = localStorage.getItem('cartItems');
+  shoppingCart.innerHTML = conteudoRecuperado;
+  // console.log(conteudoRecuperado);
+  // const conteudoParaAdicionar = [];
+  // const novoConteudo = [...conteudoRecuperado, conteudoParaAdicionar];
+  // localStorage.setItem('cartItems', novoConteudo);
+};
+
+const clearCart = () => {
+  const clearButton = document.querySelector('.empty-cart');
+  clearButton.addEventListener('click', () => {
+    ol.innerHTML = '';
+    saveCartItems();
+  });
+};
+
+const addLoading = () => {
+  const container = document.querySelector('.items');
+  const element = document.createElement('p');
+  element.innerText = 'carregando...';
+  element.classList.add('loading');
+  container.append(element);
+};
+
+const removeLoading = () => {
+  const container = document.querySelector('.items');
+  const loading = document.querySelector('.loading');
+  container.removeChild(loading);
+};
+
 window.onload = async () => {
+  addLoading();
   await createItemsOnPage();
+  removeLoading();
   puttingItemsInCart();
+  getSavedCartItems();
+  recoverItems();
+  clearCart();
 };
