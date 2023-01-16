@@ -32,6 +32,10 @@ const createProductItemElement = ({ id: sku, title: name, thumbnail: image }) =>
   return section;
 };
 
+// const calculation = () => {
+//   console.log('calculation');
+// };
+
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const ol = document.querySelector('.cart__items');
@@ -62,6 +66,7 @@ const addItemsInCart = async (event) => {
   const objectItem = await fetchItem(idItem);
   ol.appendChild(createCartItemElement(objectItem));
   saveCartItems(ol.innerHTML);
+  // calculation();
 };
 
 const puttingItemsInCart = () => {
@@ -76,10 +81,6 @@ const recoverItems = () => {
   const shoppingCart = document.querySelector('ol.cart__items');
   const conteudoRecuperado = localStorage.getItem('cartItems');
   shoppingCart.innerHTML = conteudoRecuperado;
-  // console.log(conteudoRecuperado);
-  // const conteudoParaAdicionar = [];
-  // const novoConteudo = [...conteudoRecuperado, conteudoParaAdicionar];
-  // localStorage.setItem('cartItems', novoConteudo);
 };
 
 const clearCart = () => {
